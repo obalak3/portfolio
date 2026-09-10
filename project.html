@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GT Movies Store &middot; Omer Balak</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">Omer <span>Balak</span></a>
+    <nav class="nav">
+      <a href="index.html">About</a>
+      <a class="active" href="project.html">GT Movies Store</a>
+    </nav>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="wrap">
+    <p class="kicker">CS 2340 &middot; Project 1</p>
+    <h1>GT Movies Store</h1>
+    <p class="sub">A Django web application for browsing movies, writing reviews, and placing orders. Built from the ground up and deployed to the cloud.</p>
+    <a class="btn" href="https://obalak3.pythonanywhere.com/" target="_blank" rel="noopener">Open the live application</a>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>Overview</h2>
+    <div class="rule"></div>
+    <p>The GT Movies Store is a full-stack web application built with Python and Django 5. A visitor can read about the store, browse the movie catalog, and search it by title. After registering an account and logging in, that visitor can write reviews on any movie, edit or delete their own reviews, report reviews written by others, add movies to a shopping cart in whatever quantity they choose, purchase the contents of that cart, and look back over their past orders. Administrators use the Django admin panel to manage users, movies, reviews, and orders.</p>
+    <p>The application is organized into four Django apps, each responsible for one area of the site. The <strong>home</strong> app serves the landing and about pages. The <strong>movies</strong> app owns the movie catalog, the search, the detail pages, and the entire review system. The <strong>accounts</strong> app handles registration, login, logout, and the order history page. The <strong>cart</strong> app manages the shopping cart, which lives in the user's session, and turns a cart into a saved order at purchase time.</p>
+    <p>Data is modeled with four classes. <strong>Movie</strong> holds a name, price, description, and poster image. <strong>Review</strong> links a comment to both a movie and the user who wrote it, and carries a flag for whether it has been reported. <strong>Order</strong> records a purchase total and its owner, and <strong>Item</strong> records one movie, price, and quantity inside that order. Django's built-in User model handles accounts, which means password hashing and session security are handled by code that has been tested far more thoroughly than anything I would write myself.</p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>Screens and features</h2>
+    <div class="rule"></div>
+    <p>Each screen below is annotated with the user stories it satisfies.</p>
+
+    <figure>
+      <img src="img/01-home.jpg" alt="Home page of the GT Movies Store showing the navigation bar, banner, and welcome message">
+      <figcaption>
+        <strong>Home and About</strong>
+        The landing page introduces the store and the About page explains what it offers. The navigation bar is shared by every page through a base template, so a link added once appears everywhere, and it changes depending on whether someone is logged in.
+        <span class="stories">User stories 1, 15</span>
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/02-movies-list.jpg" alt="Movie list page showing three movie posters in a grid with a search box above them">
+      <figcaption>
+        <strong>Movie list and search</strong>
+        Every movie in the database is displayed as a card with its poster. The search box filters the list by title using a case-insensitive match, so a partial word is enough to find a film. When no search term is present the view returns the full catalog.
+        <span class="stories">User stories 4, 5</span>
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/03-movie-detail-review.jpg" alt="Movie detail page for Death of a Salesman showing description, price, add to cart form, and a review with a Report button">
+      <figcaption>
+        <strong>Movie details, reviews, and reporting</strong>
+        The detail page shows the description, price, and poster, along with a quantity selector and an Add to cart button. Below that is every review for that movie. The author of a review sees Edit and Delete buttons on it, while any other logged-in user sees a Report button instead. Reporting a review flags it and removes it from the page, but keeps it in the database so an administrator can review the decision.
+        <span class="stories">User stories 7, 8, 10, 11, 12, 13, 21</span>
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/05-signup.jpg" alt="Sign up page with username, password, and password confirmation fields">
+      <figcaption>
+        <strong>Registration and login</strong>
+        Registration uses a customized version of Django's UserCreationForm, restyled to match the rest of the site and with a custom error class so validation messages appear as clear alerts rather than default browser text. The login page uses a hand-written HTML form. Both rely on Django's authentication system underneath.
+        <span class="stories">User stories 2, 3</span>
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/04-cart.jpg" alt="Shopping cart page with a table of items and a running total">
+      <figcaption>
+        <strong>Shopping cart</strong>
+        The cart is stored in the session rather than the database, so it survives page navigation without requiring a purchase. It lists each movie with its price and quantity, calculates a running total, and offers a button to remove everything at once. Purchasing converts the session cart into a permanent Order with an Item row for each movie.
+        <span class="stories">User stories 6, 7, 9</span>
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img src="img/06-orders.jpg" alt="My Orders page listing past purchases for the logged-in user">
+      <figcaption>
+        <strong>Order history</strong>
+        Each logged-in user can look back at the orders they have placed, with the movies and quantities in each one. The view filters orders by the requesting user, so nobody can see anyone else's purchase history.
+        <span class="stories">User story 14</span>
+      </figcaption>
+    </figure>
+
+    <h3>Administration</h3>
+    <p>The Django admin panel at <code>/admin</code> gives an administrator full create, read, update, and delete access to users, movies, reviews, and orders. I customized it in two places. The movie list is sorted by name and searchable by title, and the review list displays the reported flag as a column with a filter beside it, so an administrator can pull up every reported review in one click and decide whether to delete it or clear the flag.</p>
+    <p class="stories">User stories 17, 18, 19, 20</p>
+
+    <h3>Responsive interface</h3>
+    <p>The layout is built on Bootstrap's grid system with a viewport meta tag, so the navigation collapses and the movie cards reflow into a single column on a narrow screen. The application is served over HTTPS from PythonAnywhere and works in any modern desktop or mobile browser.</p>
+    <p class="stories">User stories 15, 16</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>User story coverage</h2>
+    <div class="rule"></div>
+    <table>
+      <tr><th class="num">Story</th><th>Requirement</th><th>Where it lives</th></tr>
+      <tr><td class="num">1</td><td>See information about the store</td><td>home app, About page</td></tr>
+      <tr><td class="num">2</td><td>Register an account</td><td>accounts app, signup view</td></tr>
+      <tr><td class="num">3</td><td>Log in</td><td>accounts app, login view</td></tr>
+      <tr><td class="num">4</td><td>View the list of movies</td><td>movies app, index view</td></tr>
+      <tr><td class="num">5</td><td>Search movies by title</td><td>movies index, case-insensitive filter</td></tr>
+      <tr><td class="num">6</td><td>Access a shopping cart</td><td>cart app, session-based</td></tr>
+      <tr><td class="num">7</td><td>Add one or more items to the cart</td><td>movie detail, quantity form</td></tr>
+      <tr><td class="num">8</td><td>Create movie reviews</td><td>movies app, create_review view</td></tr>
+      <tr><td class="num">9</td><td>Remove all items from the cart</td><td>cart app, clear view</td></tr>
+      <tr><td class="num">10</td><td>Edit my reviews</td><td>movies app, edit_review view</td></tr>
+      <tr><td class="num">11</td><td>Delete my reviews</td><td>movies app, delete_review view</td></tr>
+      <tr><td class="num">12</td><td>See the reviews of a movie</td><td>movie detail page</td></tr>
+      <tr><td class="num">13</td><td>See the details of a movie</td><td>movies app, show view</td></tr>
+      <tr><td class="num">14</td><td>See a list of my orders</td><td>accounts app, orders view</td></tr>
+      <tr><td class="num">15</td><td>Access the store from any browser</td><td>deployed on PythonAnywhere</td></tr>
+      <tr><td class="num">16</td><td>Responsive interface</td><td>Bootstrap grid and viewport tag</td></tr>
+      <tr><td class="num">17</td><td>Admin manages users</td><td>Django admin</td></tr>
+      <tr><td class="num">18</td><td>Admin manages movies</td><td>Django admin, custom MovieAdmin</td></tr>
+      <tr><td class="num">19</td><td>Admin manages reviews</td><td>Django admin, custom ReviewAdmin</td></tr>
+      <tr><td class="num">20</td><td>Admin manages orders</td><td>Django admin</td></tr>
+      <tr><td class="num">21</td><td>Report inappropriate reviews</td><td>movies app, report_review view</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>Process</h2>
+    <div class="rule"></div>
+
+    <h3>How I approached the work</h3>
+    <p>I worked through the project incrementally rather than trying to design the whole application up front. Each stage added one complete, working feature: first the page structure and base template, then the movie model and catalog, then the database layer, then authentication, then reviews, then the cart and orders, and finally deployment. The advantage of that order is that the application is runnable at the end of every stage, so when something breaks, the cause is almost always in the small amount of code I just wrote rather than hidden somewhere in a large untested pile.</p>
+    <p>I leaned on the framework's conventions rather than fighting them. Django has strong opinions about where models, views, URLs, and templates belong, and following those conventions meant that features I had not written yet, like the admin panel, largely worked as soon as a model existed. The one place I designed something myself was user story 21, the review reporting feature, which was not covered by any of the course material.</p>
+
+    <h3>Designing the reporting feature</h3>
+    <p>The requirement was that a user can report an inappropriate review and that the review is removed from the page going forward. My first instinct was to delete the review outright, but I decided against it. Deleting is irreversible, and it would let any user erase anyone else's review with a single click with no record of what happened. Instead I added a boolean <code>reported</code> field to the Review model, defaulting to false. Reporting sets that flag, and the movie detail view filters reported reviews out of what it displays. The review disappears from the page exactly as the story requires, but it is still in the database, visible to an administrator through the admin panel where the reported flag is both a column and a filter. That turned one requirement into something that also strengthened the administrator stories.</p>
+
+    <h3>Problems I ran into</h3>
+    <p><strong>Switching database engines.</strong> The course material walks through moving from SQLite to MySQL using XAMPP. On macOS this was less straightforward than the Windows screenshots suggested. The XAMPP control panel on macOS has no Admin button, so reaching phpMyAdmin meant navigating to localhost/phpmyadmin directly. More subtly, setting the database host to <code>localhost</code> failed with a socket error, because on macOS that value makes the driver look for a Unix socket file that XAMPP does not create where the driver expects it. Changing the host to <code>127.0.0.1</code> forces a normal TCP connection on port 3306 and resolved it. That is the kind of problem where the error message names a file path that does not obviously connect to the setting that caused it.</p>
+    <p><strong>Deployment failing on the database configuration.</strong> After pushing to GitHub and cloning onto PythonAnywhere, the deployed site returned a generic error page. The error log gave the real answer immediately: Django could not load the MySQL driver. My settings file still pointed at a MySQL database on localhost, which made sense on my own machine where XAMPP was running, but on the hosting server there was no XAMPP, no MySQL server, and no driver installed. The fix was to point the deployed copy back at SQLite. The wider lesson was that a deployment environment is not a copy of a development machine, and configuration that assumes local services will fail the moment the code leaves that machine.</p>
+    <p><strong>Static files not being served.</strong> Once the site loaded, it appeared with no styling, no logo, and no banner image. Django's development server serves static files automatically while debugging, but a production web server does not, and it will only serve files from directories it has been explicitly told about. Setting a <code>STATIC_ROOT</code>, running <code>collectstatic</code> to gather every static file into one directory, and registering that directory as a static file mapping resolved it.</p>
+    <p><strong>Working out of order.</strong> At one point I started adding the accounts app before finishing the database chapter, which left the project in a state where the URL configuration referenced a file that did not exist yet, and the server refused to start. Sorting that out took reading the traceback carefully enough to see that the error was about a missing module rather than about my code being wrong. It made me more careful about finishing one unit of work before starting the next.</p>
+
+    <h3>How I handled questions</h3>
+    <p>My first move on any error was to read the traceback from the bottom up. Python prints the actual exception last, and the lines above it are the path that led there. For deployment problems the equivalent was the server error log, which is where the MySQL driver failure was spelled out in plain language while the browser was showing nothing but a generic apology. When the framework behavior itself was unclear, the Django documentation was more useful than searching, because it explains why a setting exists rather than just what to type. For the reporting feature, where there was no reference to follow, I looked at how the existing edit and delete review features were structured and matched their shape, so the new code reads like the rest of the application rather than like a bolt-on.</p>
+
+    <h3>What I would do differently</h3>
+    <p>I would separate configuration that differs between my machine and the server from the start, instead of discovering the difference at deployment time. I would also write the review reporting feature with a form submission rather than a plain link, since a link means the action happens on any visit to that address, which is fine for a class project but is not how a destructive action should work in general.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Video demonstration</h2>
+    <div class="rule"></div>
+    <div class="video-box">
+      <p><strong>Demo video coming soon.</strong></p>
+      <p>A walkthrough of the GT Movies Store and its features will be embedded here.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Omer Balak &middot; CS 2340 Objects and Design &middot; Georgia Institute of Technology</p>
+    <p>Live application: <a href="https://obalak3.pythonanywhere.com/" target="_blank" rel="noopener">obalak3.pythonanywhere.com</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
