@@ -221,14 +221,25 @@ th { background: var(--navy); color: #fff; font-size: 14px; }
 
 td.num { width: 62px; color: var(--muted); }
 
-/* Video placeholder */
-.video-box {
-  border: 2px dashed var(--line);
+/* Video */
+.video-frame {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
   border-radius: 6px;
-  padding: 44px 24px;
-  text-align: center;
-  color: var(--muted);
-  background: var(--wash);
+  overflow: hidden;
+  background: #000;
+  border: 1px solid var(--line);
+  margin-bottom: 14px;
+}
+
+.video-frame iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 /* Footer */
